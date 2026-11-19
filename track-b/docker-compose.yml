@@ -1,0 +1,27 @@
+services:
+  web1:
+    image: nginx:alpine
+    container_name: web1
+    volumes:
+      - ./web1:/usr/share/nginx/html:ro
+
+  web2:
+    image: nginx:alpine
+    container_name: web2
+    volumes:
+      - ./web2:/usr/share/nginx/html:ro
+
+  # TODO A: voeg hier web3 toe. Tip: kijk goed naar web1 en web2.
+
+  haproxy:
+    image: haproxy:3.2-alpine
+    container_name: haproxy
+    ports:
+      - "80:8080"     # de website
+      - "8404:8404"   # statspagina
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy:ro
+    depends_on:
+      - web1
+      - web2
+      # TODO B: moet hier nog iets bij?

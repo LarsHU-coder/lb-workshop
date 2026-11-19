@@ -1,0 +1,38 @@
+services:
+  web1:
+    image: nginx:alpine
+    container_name: web1
+    volumes:
+      - ./web1:/usr/share/nginx/html:ro
+
+  web2:
+    image: nginx:alpine
+    container_name: web2
+    volumes:
+      - ./web2:/usr/share/nginx/html:ro
+
+  web3:
+    image: nginx:alpine
+    container_name: web3
+    volumes:
+      - ./web3:/usr/share/nginx/html:ro
+
+  # Bonus: haal de # weg en start met: docker compose up -d web4
+  # web4:
+  #   image: nginx:alpine
+  #   container_name: web4
+  #   volumes:
+  #     - ./web4:/usr/share/nginx/html:ro
+
+  haproxy:
+    image: haproxy:3.2-alpine
+    container_name: haproxy
+    ports:
+      - "80:8080"     # de website
+      - "8404:8404"   # statspagina
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy:ro
+    depends_on:
+      - web1
+      - web2
+      - web3
